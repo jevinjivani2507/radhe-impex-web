@@ -84,7 +84,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </div>
       </header>
 
-      <main>
+      <main className="bg-paper">
         <section id="shapes" className="mx-auto max-w-6xl scroll-mt-8 px-6 py-24 lg:py-32">
           <h2 className="text-center font-serif text-[clamp(2.25rem,4.5vw,3.5rem)] leading-tight">
             {t.shapes.title}
@@ -117,7 +117,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </section>
       </main>
 
-      <footer className="bg-forest-deep text-mist">
+      <footer className="border-t border-paper/10 bg-forest text-mist">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-10 text-sm sm:flex-row sm:items-center sm:justify-between">
           <span className="font-brand text-xl tracking-[0.18em] text-paper">
             {site.name.toUpperCase()}

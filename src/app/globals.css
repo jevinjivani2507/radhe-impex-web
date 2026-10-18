@@ -2,7 +2,6 @@
 
 @theme {
   --color-forest: #1b3a22;
-  --color-forest-deep: #12291a;
   --color-gold: #c9a043;
   --color-mist: #c9d6cc;
   --color-paper: #ffffff;
@@ -18,12 +17,16 @@
   --font-brand: var(--font-cormorant);
 }
 
+/* The page itself is green so Safari tints its status and tool bars (and the
+   overscroll area) to match the header and footer. Light sections set their
+   own background. */
 html {
   scroll-behavior: smooth;
+  background: var(--color-forest);
 }
 
 body {
-  background: var(--color-paper);
+  background: var(--color-forest);
   color: var(--color-ink);
 }
 
