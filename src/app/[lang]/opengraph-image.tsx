@@ -5,7 +5,7 @@ import { hasLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { site } from "@/lib/site";
 
-export const alt = site.name;
+export const alt = `${site.name} — lab-grown diamonds in twelve shapes`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
