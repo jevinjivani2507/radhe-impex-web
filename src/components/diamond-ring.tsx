@@ -19,7 +19,7 @@ export function DiamondRing({ className = "" }: { className?: string }) {
 
         {/* Gold band seen edge-on, like a solitaire viewed from the side: a polished
             tube lit from above, darkening at the ends where it curves away. */}
-        <div className="absolute top-1/2 left-[-12cqw] h-[3cqw] w-[42cqw] -translate-y-1/2 rounded-full shadow-[0_0.7cqw_1.4cqw_rgba(30,20,4,0.28),0_0.15cqw_0.3cqw_rgba(30,20,4,0.25)]">
+        <div className="absolute top-1/2 left-[-6cqw] h-[3cqw] w-[30cqw] -translate-y-1/2 rounded-full shadow-[0_0.7cqw_1.4cqw_rgba(30,20,4,0.28),0_0.15cqw_0.3cqw_rgba(30,20,4,0.25)]">
           <div
             className="absolute inset-0 rounded-full"
             style={{
