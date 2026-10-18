@@ -8,9 +8,14 @@
   --color-paper: #ffffff;
   --color-ink: #17251b;
   --color-stone: #5f6b62;
+}
 
-  --font-serif: var(--font-cormorant);
-  --font-sans: var(--font-jost);
+/* Fonts are set per language on <html> in app/[lang]/layout.tsx. Headings use
+   --font-display when a language defines one (Khmer), otherwise Cormorant. */
+@theme inline {
+  --font-serif: var(--font-display, var(--font-cormorant));
+  --font-sans: var(--font-body);
+  --font-brand: var(--font-cormorant);
 }
 
 html {
@@ -20,6 +25,22 @@ html {
 body {
   background: var(--color-paper);
   color: var(--color-ink);
+}
+
+/* Khmer script stacks vowels and subscripts above and below the line, so it
+   needs more leading and a slightly smaller display size than Latin. */
+:lang(km) h1 {
+  font-size: clamp(2.25rem, 5vw, 4.25rem);
+  line-height: 1.35;
+}
+
+:lang(km) h2,
+:lang(km) h3 {
+  line-height: 1.5;
+}
+
+:lang(km) p {
+  line-height: 1.9;
 }
 
 :focus-visible {

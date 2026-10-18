@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { shapes } from "@/lib/site";
+import { shapeSlugs } from "@/lib/site";
 
 // A white ring with every shape set around it, and a gold band fixed at
 // nine o'clock. The track turns one stone at a time (see `orbit` in
@@ -10,7 +10,7 @@ const BAND_ANGLE = 270;
 const FIRST_ON_BAND = 2;
 
 export function DiamondRing({ className = "" }: { className?: string }) {
-  const step = 360 / shapes.length;
+  const step = 360 / shapeSlugs.length;
 
   return (
     <div className={`@container aspect-square ${className}`} aria-hidden="true">
@@ -38,11 +38,11 @@ export function DiamondRing({ className = "" }: { className?: string }) {
         </div>
 
         <div className="orbit-track absolute inset-0">
-          {shapes.map((shape, i) => {
+          {shapeSlugs.map((slug, i) => {
             const angle = BAND_ANGLE - (i - FIRST_ON_BAND) * step;
             return (
               <div
-                key={shape.slug}
+                key={slug}
                 className="absolute top-1/2 left-1/2 size-[12.5cqw]"
                 style={{
                   transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-41cqw) rotate(${-angle}deg)`,
@@ -50,7 +50,7 @@ export function DiamondRing({ className = "" }: { className?: string }) {
               >
                 <div className="orbit-stone relative size-full">
                   <Image
-                    src={`/diamonds/${shape.slug}.png`}
+                    src={`/diamonds/${slug}.png`}
                     alt=""
                     fill
                     sizes="(min-width: 1024px) 120px, 25vw"

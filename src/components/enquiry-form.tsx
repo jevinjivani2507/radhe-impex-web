@@ -2,64 +2,86 @@
 
 import { track } from "@vercel/analytics";
 import { useEffect, useState } from "react";
-import { shapes, site } from "@/lib/site";
-import { PICK_SHAPE_EVENT } from "./shape-grid";
-
-const sizes = ["Under 0.5 ct", "0.5 – 1 ct", "1 – 2 ct", "2 – 3 ct", "Over 3 ct", "Not sure yet"];
+import type { Dictionary } from "@/i18n/dictionaries/en";
+import { fill } from "@/i18n/fill";
+import { site } from "@/lib/site";
+import { PICK_SHAPE_EVENT, type ShapeItem } from "./shape-grid";
 
 const field =
   "w-full border-b border-mist/40 bg-transparent py-3 text-lg text-paper outline-none transition-colors focus:border-gold";
 
-export function EnquiryForm() {
-  const [shape, setShape] = useState(shapes[0].name);
-  const [size, setSize] = useState(sizes[2]);
+export function EnquiryForm({
+  t,
+  shapes,
+  locale,
+}: {
+  t: Dictionary["enquiry"];
+  shapes: ShapeItem[];
+  locale: string;
+}) {
+  const [slug, setSlug] = useState(shapes[0].slug);
+  const [sizeIndex, setSizeIndex] = useState(2);
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
 
   useEffect(() => {
-    const onPick = (e: Event) => setShape((e as CustomEvent<string>).detail);
+    const onPick = (e: Event) => setSlug((e as CustomEvent<ShapeItem["slug"]>).detail);
     window.addEventListener(PICK_SHAPE_EVENT, onPick);
     return () => window.removeEventListener(PICK_SHAPE_EVENT, onPick);
   }, []);
 
+  const shapeName = shapes.find((s) => s.slug === slug)?.name ?? slug;
+  const size = t.sizes[sizeIndex];
   const message = [
-    `Hi ${site.name}, I'm looking for a ${shape} diamond, ${size}.`,
-    note && note.trim(),
-    name && `— ${name.trim()}`,
+    fill(t.message, { brand: site.name, shape: shapeName, size }),
+    note.trim(),
+    name.trim() && `— ${name.trim()}`,
   ]
     .filter(Boolean)
     .join("\n");
 
+  // Events use the English slug and size index so reports group across languages.
+  const trackEnquiry = (via: "whatsapp" | "email") =>
+    track("Enquiry", { shape: slug, size: sizeIndex, via, locale });
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    track("Enquiry", { shape, size, via: "whatsapp" });
+    trackEnquiry("whatsapp");
     window.open(`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (
     <form onSubmit={onSubmit} className="grid gap-8 sm:grid-cols-2">
       <label className="block">
-        <span className="text-sm text-mist">Shape</span>
-        <select value={shape} onChange={(e) => setShape(e.target.value)} className={field}>
+        <span className="text-sm text-mist">{t.shape}</span>
+        <select
+          value={slug}
+          onChange={(e) => setSlug(e.target.value as ShapeItem["slug"])}
+          className={field}
+        >
           {shapes.map((s) => (
-            <option key={s.slug} className="text-ink">
+            <option key={s.slug} value={s.slug} className="text-ink">
               {s.name}
             </option>
           ))}
         </select>
       </label>
       <label className="block">
-        <span className="text-sm text-mist">Size</span>
-        <select value={size} onChange={(e) => setSize(e.target.value)} className={field}>
-          {sizes.map((s) => (
-            <option key={s} className="text-ink">
+        <span className="text-sm text-mist">{t.size}</span>
+        <select
+          value={sizeIndex}
+          onChange={(e) => setSizeIndex(Number(e.target.value))}
+          className={field}
+        >
+          {t.sizes.map((s, i) => (
+            <option key={s} value={i} className="text-ink">
               {s}
             </option>
           ))}
         </select>
       </label>
       <label className="block">
-        <span className="text-sm text-mist">Your name</span>
+        <span className="text-sm text-mist">{t.name}</span>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -68,11 +90,11 @@ export function EnquiryForm() {
         />
       </label>
       <label className="block">
-        <span className="text-sm text-mist">Anything else (optional)</span>
+        <span className="text-sm text-mist">{t.note}</span>
         <input
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder="Budget, setting, deadline…"
+          placeholder={t.notePlaceholder}
           className={`${field} placeholder:text-mist/50`}
         />
       </label>
@@ -81,14 +103,14 @@ export function EnquiryForm() {
           type="submit"
           className="rounded-full bg-paper px-8 py-4 text-base font-medium text-forest transition-colors hover:bg-gold"
         >
-          Send on WhatsApp
+          {t.send}
         </button>
         <a
-          onClick={() => track("Enquiry", { shape, size, via: "email" })}
-          href={`mailto:${site.email}?subject=${encodeURIComponent(`${shape} diamond enquiry`)}&body=${encodeURIComponent(message)}`}
+          onClick={() => trackEnquiry("email")}
+          href={`mailto:${site.email}?subject=${encodeURIComponent(fill(t.subject, { shape: shapeName }))}&body=${encodeURIComponent(message)}`}
           className="text-mist underline decoration-mist/40 underline-offset-4 hover:text-paper"
         >
-          Or send by email
+          {t.email}
         </a>
       </div>
     </form>

@@ -1,9 +1,11 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { hasLocale, locales } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { site } from "@/lib/site";
 
-export const alt = `${site.name} — ${site.tagline}`;
+export const alt = site.name;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -21,12 +23,37 @@ const placed = [
   { slug: "princess", angle: 252 },
 ];
 
-export default async function Image() {
-  const [cormorant, jost, ...stones] = await Promise.all([
-    readFile(join(process.cwd(), "src/assets/cormorant-400.ttf")),
-    readFile(join(process.cwd(), "src/assets/jost-400.ttf")),
-    ...placed.map((p) =>
-      readFile(join(process.cwd(), `public/diamonds/${p.slug}.png`), "base64"),
+// Font files per language, tried in order for each glyph. Cormorant stays first
+// for the Latin wordmark.
+const fontFiles: Record<"en" | "vi", { display: string[]; body: string[] }> = {
+  en: { display: ["cormorant-400"], body: ["jost-400"] },
+  vi: {
+    display: ["cormorant-400", "cormorant-400-vi"],
+    body: ["bevietnam-400", "bevietnam-400-vi"],
+  },
+};
+
+const load = (name: string) => readFile(join(process.cwd(), `src/assets/${name}.ttf`));
+
+export async function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export default async function Image({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang: raw } = await params;
+  // The image renderer cannot shape Khmer script (vowels and subscripts land in
+  // the wrong place), so the Khmer preview uses the English copy.
+  const lang: "en" | "vi" = hasLocale(raw) && raw === "vi" ? "vi" : "en";
+  const t = await getDictionary(lang);
+  const files = fontFiles[lang];
+
+  const [display, body, stones] = await Promise.all([
+    Promise.all(files.display.map(load)),
+    Promise.all(files.body.map(load)),
+    Promise.all(
+      placed.map((p) =>
+        readFile(join(process.cwd(), `public/diamonds/${p.slug}.png`), "base64"),
+      ),
     ),
   ]);
 
@@ -40,7 +67,7 @@ export default async function Image() {
           position: "relative",
           background: "#1b3a22",
           color: "#ffffff",
-          fontFamily: "Jost",
+          fontFamily: files.body.map((_, i) => `Body${i}`).join(", "),
         }}
       >
         <div
@@ -82,16 +109,20 @@ export default async function Image() {
             width: 720,
           }}
         >
-          <div style={{ fontFamily: "Cormorant", fontSize: 40, letterSpacing: 7 }}>
+          <div style={{ fontFamily: "Display0", fontSize: 40, letterSpacing: 7 }}>
             {site.name.toUpperCase()}
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontFamily: "Cormorant", fontSize: 84, lineHeight: 1.02 }}>
-              Lab-grown diamonds, in the shape you love.
+            <div
+              style={{
+                fontFamily: files.display.map((_, i) => `Display${i}`).join(", "),
+                fontSize: 84,
+                lineHeight: 1.02,
+              }}
+            >
+              {t.hero.title}
             </div>
-            <div style={{ marginTop: 28, fontSize: 28, color: "#c9d6cc" }}>
-              Certified CVD diamonds in twelve cuts
-            </div>
+            <div style={{ marginTop: 28, fontSize: 28, color: "#c9d6cc" }}>{t.meta.ogLine}</div>
           </div>
         </div>
       </div>
@@ -99,8 +130,8 @@ export default async function Image() {
     {
       ...size,
       fonts: [
-        { name: "Cormorant", data: cormorant, style: "normal", weight: 400 },
-        { name: "Jost", data: jost, style: "normal", weight: 400 },
+        ...display.map((data, i) => ({ name: `Display${i}`, data, style: "normal" as const, weight: 400 as const })),
+        ...body.map((data, i) => ({ name: `Body${i}`, data, style: "normal" as const, weight: 400 as const })),
       ],
     },
   );

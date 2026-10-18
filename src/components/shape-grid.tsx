@@ -1,26 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { shapes } from "@/lib/site";
+import { fill } from "@/i18n/fill";
+import type { ShapeSlug } from "@/lib/site";
 
 export const PICK_SHAPE_EVENT = "pick-shape";
 
-export function ShapeGrid() {
+export type ShapeItem = { slug: ShapeSlug; name: string; note: string };
+
+export function ShapeGrid({ items, alt }: { items: ShapeItem[]; alt: string }) {
   return (
     <ul className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-4">
-      {shapes.map((shape) => (
+      {items.map((shape) => (
         <li key={shape.slug}>
           <a
             href="#enquire"
             onClick={() =>
-              window.dispatchEvent(new CustomEvent(PICK_SHAPE_EVENT, { detail: shape.name }))
+              window.dispatchEvent(new CustomEvent(PICK_SHAPE_EVENT, { detail: shape.slug }))
             }
             className="group block rounded-sm"
           >
             <div className="relative mx-auto h-36 w-28 sm:h-44 sm:w-32">
               <Image
                 src={`/diamonds/${shape.slug}.png`}
-                alt={`${shape.name} cut lab-grown diamond`}
+                alt={fill(alt, { shape: shape.name })}
                 fill
                 sizes="128px"
                 className="object-contain transition-transform duration-300 group-hover:scale-105"
