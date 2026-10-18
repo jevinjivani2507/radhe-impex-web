@@ -41,10 +41,12 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <header className="relative isolate overflow-hidden bg-forest text-paper">
-        <DiamondRing className="absolute right-0 bottom-[6vw] -z-10 w-[118vw] translate-x-[48%] lg:top-1/2 lg:bottom-auto lg:w-[min(118vh,68vw)] lg:translate-x-[42%] lg:-translate-y-1/2" />
+      <header className="relative isolate flex min-h-svh flex-col overflow-hidden bg-forest text-paper">
+        {/* Phones: ring on the right edge at mid-height, between headline and buttons.
+            Desktop: larger, beside the text. */}
+        <DiamondRing className="absolute top-[calc(50%+2rem)] right-0 -z-10 w-[min(108vw,78svh)] translate-x-1/2 -translate-y-1/2 lg:top-1/2 lg:w-[min(118vh,68vw)] lg:translate-x-[42%]" />
 
-        <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 sm:justify-start sm:gap-12 py-7 lg:px-10">
+        <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-6 py-6 sm:justify-start sm:gap-12 sm:py-7 lg:px-10">
           <Link href="/" className="font-serif text-2xl whitespace-nowrap tracking-[0.12em] sm:text-3xl sm:tracking-[0.18em]">
             {site.name.toUpperCase()}
           </Link>
@@ -58,15 +60,15 @@ export default function Home() {
           </div>
         </nav>
 
-        <div className="mx-auto flex min-h-[calc(100svh-96px)] max-w-7xl flex-col px-6 pt-10 pb-[122vw] lg:justify-center lg:px-10 lg:pt-0 lg:pb-24">
-          <h1 className="max-w-[13ch] font-serif text-[clamp(2.75rem,7vw,5.75rem)] leading-[1.02] font-normal">
+        <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 pt-2 pb-10 lg:justify-center lg:px-10 lg:pt-0 lg:pb-24">
+          <h1 className="max-w-[13ch] font-serif text-[clamp(2.5rem,7vw,5.75rem)] leading-[1.04] font-normal">
             Lab-grown diamonds, in the shape you love.
           </h1>
-          <p className="mt-7 max-w-[42ch] text-lg leading-relaxed text-mist">
+          <p className="mt-7 hidden max-w-[42ch] text-lg leading-relaxed text-mist sm:block">
             Certified CVD diamonds in twelve cuts. Pick a shape and a size, and we&apos;ll send
             you matching stones with prices within a day.
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <div className="mt-auto flex flex-wrap items-center gap-x-8 gap-y-4 pt-10 lg:mt-10 lg:pt-0">
             <a
               href="#shapes"
               className="rounded-full bg-paper px-8 py-4 font-medium text-forest transition-colors hover:bg-gold"
