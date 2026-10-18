@@ -1,26 +1,80 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-forest: #1b3a22;
+  --color-forest-deep: #12291a;
+  --color-gold: #c9a043;
+  --color-mist: #c9d6cc;
+  --color-paper: #ffffff;
+  --color-ink: #17251b;
+  --color-stone: #5f6b62;
+
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-jost);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* Hero ring: the track turns one stone at a time and pauses, so each stone
+   rests on the gold band before moving on. Stones counter-turn to stay upright. */
+@keyframes orbit {
+  0%, 5.833% { transform: rotate(0deg); }
+  8.333%, 14.167% { transform: rotate(30deg); }
+  16.667%, 22.5% { transform: rotate(60deg); }
+  25%, 30.833% { transform: rotate(90deg); }
+  33.333%, 39.167% { transform: rotate(120deg); }
+  41.667%, 47.5% { transform: rotate(150deg); }
+  50%, 55.833% { transform: rotate(180deg); }
+  58.333%, 64.167% { transform: rotate(210deg); }
+  66.667%, 72.5% { transform: rotate(240deg); }
+  75%, 80.833% { transform: rotate(270deg); }
+  83.333%, 89.167% { transform: rotate(300deg); }
+  91.667%, 97.5% { transform: rotate(330deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes orbit-reverse {
+  0%, 5.833% { transform: rotate(0deg); }
+  8.333%, 14.167% { transform: rotate(-30deg); }
+  16.667%, 22.5% { transform: rotate(-60deg); }
+  25%, 30.833% { transform: rotate(-90deg); }
+  33.333%, 39.167% { transform: rotate(-120deg); }
+  41.667%, 47.5% { transform: rotate(-150deg); }
+  50%, 55.833% { transform: rotate(-180deg); }
+  58.333%, 64.167% { transform: rotate(-210deg); }
+  66.667%, 72.5% { transform: rotate(-240deg); }
+  75%, 80.833% { transform: rotate(-270deg); }
+  83.333%, 89.167% { transform: rotate(-300deg); }
+  91.667%, 97.5% { transform: rotate(-330deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+.orbit-track {
+  animation: orbit 42s ease-in-out infinite;
+}
+
+.orbit-stone {
+  animation: orbit-reverse 42s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .orbit-track,
+  .orbit-stone {
+    animation: none;
+  }
 }
