@@ -1,16 +1,27 @@
 import Image from "next/image";
-import { shapeSlugs } from "@/lib/site";
+import { shapeSlugs, type ShapeSlug } from "@/lib/site";
 
 // A white ring with every shape set around it, and a gold band fixed at
 // nine o'clock. The track turns one stone at a time (see `orbit` in
 // globals.css); each stone that stops at nine o'clock sits on the band and
 // reads as a solitaire ring. Each stone counter-turns so it stays upright.
-// The pear starts on the band, then the shapes follow in list order.
+// The pear starts on the band, then the shapes follow in list order, and the
+// current stone's name shows inside the ring's hole.
 const BAND_ANGLE = 270;
 const FIRST_ON_BAND = 2;
 
-export function DiamondRing({ className = "" }: { className?: string }) {
-  const step = 360 / shapeSlugs.length;
+// One step of the `orbit` animation in seconds; must match globals.css.
+const STEP_SECONDS = 3.5;
+
+export function DiamondRing({
+  names,
+  className = "",
+}: {
+  names: Record<ShapeSlug, { name: string }>;
+  className?: string;
+}) {
+  const count = shapeSlugs.length;
+  const step = 360 / count;
 
   return (
     <div className={`@container aspect-square ${className}`} aria-hidden="true">
@@ -59,6 +70,26 @@ export function DiamondRing({ className = "" }: { className?: string }) {
                   />
                 </div>
               </div>
+            );
+          })}
+        </div>
+
+        {/* Name of the stone on the band, just past the band's end inside the hole.
+            Each name shows while its stone rests on the band (see `shape-name`). */}
+        {/* Phones only show the hole up to the screen edge (ring centre), so names
+            get 22cqw and wrap; desktop shows more of the hole. */}
+        <div className="absolute top-1/2 left-[26cqw] h-0 w-[22cqw] font-serif text-[4.8cqw] leading-[1.15] text-paper lg:left-[27cqw] lg:w-[30cqw] lg:text-[6cqw]">
+          {shapeSlugs.map((slug, i) => {
+            const stepsUntilOnBand = (i - FIRST_ON_BAND + count) % count;
+            return (
+              <span
+                key={slug}
+                data-first={stepsUntilOnBand === 0 || undefined}
+                className="shape-name absolute top-0 left-0 w-full -translate-y-1/2 lg:whitespace-nowrap"
+                style={{ animationDelay: `${-((count - stepsUntilOnBand) % count) * STEP_SECONDS}s` }}
+              >
+                {names[slug].name}
+              </span>
             );
           })}
         </div>

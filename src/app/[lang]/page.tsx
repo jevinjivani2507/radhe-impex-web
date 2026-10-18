@@ -40,7 +40,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <header className="relative isolate flex min-h-svh flex-col overflow-hidden bg-forest text-paper">
         {/* Phones: ring on the right edge at mid-height, between headline and buttons.
             Desktop: larger, beside the text. */}
-        <DiamondRing className="absolute top-[calc(50%+2rem)] right-0 -z-10 w-[min(108vw,78svh)] translate-x-1/2 -translate-y-1/2 lg:top-1/2 lg:w-[min(118vh,68vw)] lg:translate-x-[42%]" />
+        <DiamondRing
+          names={t.shapes.items}
+          className="absolute top-[calc(50%+2rem)] right-0 -z-10 w-[min(108vw,78svh)] translate-x-1/2 -translate-y-1/2 lg:top-1/2 lg:w-[min(118vh,68vw)] lg:translate-x-[42%]" />
 
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-6 py-6 sm:justify-start sm:gap-12 sm:py-7 lg:px-10">
           <Link

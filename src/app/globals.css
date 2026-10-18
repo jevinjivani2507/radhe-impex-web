@@ -42,6 +42,17 @@ body {
   line-height: 1.5;
 }
 
+:lang(km) .shape-name {
+  font-size: 4.2cqw;
+  line-height: 1.5;
+}
+
+@media (min-width: 64rem) {
+  :lang(km) .shape-name {
+    font-size: 5.4cqw;
+  }
+}
+
 :lang(km) p {
   line-height: 1.9;
 }
@@ -93,12 +104,48 @@ body {
   animation: orbit-reverse 42s ease-in-out infinite;
 }
 
+/* Each shape name runs this on the same 42s cycle as the ring, offset so it is
+   visible while its stone rests on the band: it leaves upward as the stone moves
+   on and the next name rises in as the next stone arrives. */
+@keyframes shape-name {
+  0%,
+  5.833% {
+    opacity: 1;
+    transform: none;
+  }
+  6.8%,
+  50% {
+    opacity: 0;
+    transform: translateY(-0.4em);
+  }
+  50.01%,
+  98.6% {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Without animation (first paint, reduced motion) only the first name shows. */
+.shape-name {
+  opacity: 0;
+  animation: shape-name 42s ease-in-out infinite;
+}
+
+.shape-name[data-first] {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   .orbit-track,
-  .orbit-stone {
+  .orbit-stone,
+  .shape-name {
     animation: none;
   }
 }
