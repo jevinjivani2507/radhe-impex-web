@@ -4,7 +4,7 @@ const en = {
   meta: {
     title: "Radhe Impex — Lab-grown CVD diamonds in twelve shapes",
     description:
-      "Certified CVD lab-grown diamonds in twelve classic shapes — round, oval, pear, emerald and more. Choose a shape and get matching stones with prices in a day.",
+      "Radhe Impex has manufactured certified CVD lab-grown diamonds since 2015, in twelve shapes — round, oval, pear, emerald and more. Offices in India, Thailand and Cambodia.",
     ogLine: "Certified CVD diamonds in twelve cuts",
   },
   nav: { shapes: "Shapes", enquire: "Enquire", language: "Language" },
@@ -61,7 +61,22 @@ const en = {
     message: "Hi {brand}, I'm looking for a {shape} diamond, {size}.",
     subject: "{shape} diamond enquiry",
   },
-  footer: { city: "Surat, India" },
+  about: {
+    title: "Manufacturing lab-grown diamonds since 2015",
+    body: "Radhe Impex has manufactured lab-grown diamonds since 2015. We supply jewellers and traders in many countries, with offices in India, Thailand and Cambodia.",
+    officesLabel: "Offices",
+    offices: ["Surat, India", "Bangkok, Thailand", "Cambodia"],
+    customersLabel: "Customers in",
+    countries: ["USA", "Israel", "Italy", "Brazil", "Dubai", "Thailand", "Cambodia", "Vietnam", "Myanmar"],
+  },
+  contact: {
+    title: "Or talk to us directly",
+    call: "Call",
+    whatsapp: "WhatsApp",
+    email: "Email",
+    office: "Head office",
+    directions: "Get directions",
+  },
 };
 
 export default en;

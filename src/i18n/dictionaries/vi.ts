@@ -5,7 +5,7 @@ const vi: Dictionary = {
   meta: {
     title: "Radhe Impex — Kim cương nhân tạo CVD với mười hai kiểu cắt",
     description:
-      "Kim cương nhân tạo (lab-grown) CVD có giấy kiểm định, với mười hai kiểu cắt: tròn, oval, giọt nước, emerald và nhiều hơn nữa. Chọn dáng và nhận báo giá trong một ngày.",
+      "Radhe Impex sản xuất kim cương nhân tạo (lab-grown) CVD có giấy kiểm định từ năm 2015, với mười hai kiểu cắt: tròn, oval, giọt nước, emerald và nhiều hơn nữa. Văn phòng tại Ấn Độ, Thái Lan và Campuchia.",
     ogLine: "Kim cương CVD có kiểm định, mười hai kiểu cắt",
   },
   nav: { shapes: "Kiểu cắt", enquire: "Liên hệ", language: "Ngôn ngữ" },
@@ -62,7 +62,22 @@ const vi: Dictionary = {
     message: "Xin chào {brand}, tôi đang tìm kim cương dáng {shape}, {size}.",
     subject: "Yêu cầu kim cương dáng {shape}",
   },
-  footer: { city: "Surat, Ấn Độ" },
+  about: {
+    title: "Sản xuất kim cương nhân tạo từ năm 2015",
+    body: "Radhe Impex sản xuất kim cương nhân tạo từ năm 2015. Chúng tôi cung cấp cho các nhà kim hoàn và thương nhân ở nhiều quốc gia, với văn phòng tại Ấn Độ, Thái Lan và Campuchia.",
+    officesLabel: "Văn phòng",
+    offices: ["Surat, Ấn Độ", "Bangkok, Thái Lan", "Campuchia"],
+    customersLabel: "Khách hàng tại",
+    countries: ["Mỹ", "Israel", "Ý", "Brazil", "Dubai", "Thái Lan", "Campuchia", "Việt Nam", "Myanmar"],
+  },
+  contact: {
+    title: "Hoặc liên hệ trực tiếp",
+    call: "Gọi",
+    whatsapp: "WhatsApp",
+    email: "Email",
+    office: "Trụ sở chính",
+    directions: "Chỉ đường",
+  },
 };
 
 export default vi;

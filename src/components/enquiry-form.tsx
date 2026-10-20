@@ -4,7 +4,7 @@ import { track } from "@vercel/analytics";
 import { useEffect, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries/en";
 import { fill } from "@/i18n/fill";
-import { site } from "@/lib/site";
+import { site, whatsappNumber } from "@/lib/site";
 import { PICK_SHAPE_EVENT, type ShapeItem } from "./shape-grid";
 
 const field =
@@ -47,7 +47,7 @@ export function EnquiryForm({
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     trackEnquiry("whatsapp");
-    window.open(`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(`https://wa.me/${whatsappNumber(site.contacts[0].phone)}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (
